@@ -1,0 +1,72 @@
+#include<iostream>
+#define MAX 50
+using namespace std;
+
+char stack[MAX];
+int top = -1;
+
+// Push function to add character to stack
+void push(char x) {
+    if (top == MAX - 1) {
+        cout << "STACK OVERFLOW\n";
+    } else {
+        stack[++top] = x;
+    }
+}
+
+// Pop function to remove and return the top character from stack
+char pop() {
+    if (top == -1) {
+        cout << "STACK UNDERFLOW\n";
+        return '\0';
+    }
+    return stack[top--];
+}
+
+// Function to check if the string is a palindrome
+bool isPalindrome(char str[], int length) {
+    char cleanStr[MAX];  // To store cleaned string (without spaces, in lowercase)
+    int cleanLength = 0;
+
+    // Clean the string by removing spaces and converting to lowercase
+    for (int i = 0; i < length; i++) {
+        if (str[i] >= 'A' && str[i] <= 'Z') {  // Convert uppercase to lowercase
+            cleanStr[cleanLength++] = str[i] + 32;
+        } else if (str[i] >= 'a' && str[i] <= 'z') {  // Copy lowercase characters directly
+            cleanStr[cleanLength++] = str[i];
+        }
+    }
+
+    // Push cleaned characters into the stack
+    for (int i = 0; i < cleanLength; i++) {
+        push(cleanStr[i]);
+    }
+
+    // Compare stack's pop with the cleaned string
+    for (int i = 0; i < cleanLength; i++) {
+        if (pop() != cleanStr[i]) {
+            return false;  // Not a palindrome if characters don't match
+        }
+    }
+    return true;  // It's a palindrome if all characters match
+}
+
+int main() {
+    char str[MAX];
+    cout << "Enter a string: ";
+    cin.getline(str, MAX);  // Take input string
+
+    int length = 0;
+    while (str[length] != '\0') {
+        length++;
+    }
+
+    // Check if the string is a palindrome
+    if (isPalindrome(str, length)) {
+        cout << "'" << str << "' is a palindrome." << endl;
+    } else {
+        cout << "'" << str << "' is not a palindrome." << endl;
+    }
+
+    return 0;
+}
